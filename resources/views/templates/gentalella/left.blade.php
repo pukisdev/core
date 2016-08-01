@@ -26,11 +26,37 @@
                     <br />
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-
+{{-- {!! $MyNavBar->asUl() !!} --}}
+                        <?php $items = !empty($MyNavBar) ? $MyNavBar->roots() : null; ?>
+  
+                        @if(!empty($items))
+                        @foreach($items as $item)
+                            <?php //print_r($item)?>
+                            <div class="menu_section">
+                                <h3>{!! $item->title !!}</h3>
+                                @if($item->hasChildren())
+                                    <?php $childrens =  $item->children(); ?> 
+                                    @foreach($childrens as $children)
+                                    <ul class="nav side-menu">
+                                        <li><a @if(!$item->hasChildren()) href="{!! $children->url() !!}" @endif><i class="fa fa-home"></i> {!! $children->title !!} @if($children->hasChildren()) <span class="fa fa-chevron-down"></span> @endif</a>
+                                        @if($children->hasChildren())
+                                            <?php $grandChildrens =  $children->children(); ?> 
+                                            @foreach($grandChildrens as $grandChildren)
+                                            <ul class="nav child_menu" style="display: none">
+                                                <li><a href="{!! $grandChildren->url() !!}">{!! $grandChildren->title !!}</a></li>
+                                            </ul>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                    @endforeach
+                                 @endif
+                            </div>
+                        @endforeach
+                        @endif
                         <div class="menu_section">
                             <h3>General</h3>
                             <ul class="nav side-menu">
-                                <li><a><i class="fa fa-home"></i> Home</a>
+                                <li><a href="/"><i class="fa fa-home"></i> Home</a>
                                 </li>
                                 <li><a><i class="fa fa-bank"></i> Company Profile <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">

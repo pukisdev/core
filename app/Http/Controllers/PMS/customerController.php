@@ -39,6 +39,15 @@ class customerController extends Controller
     public function create()
     {
         //
+        $code = null;
+        do
+        {
+            $code = str_random(128); //mt_rand(100000, 9999999);
+            $user_code = DB::table('sys_app_mst')->where('id_app', $code)->first();
+        }
+        while(!empty($user_code));
+
+        dd($code);        
     }
 
     /**

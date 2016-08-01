@@ -26,6 +26,22 @@ Route::get('/home', 'HomeController@index');
 
 Route::get('/token', 'Auth\TokenController@getToken');
 
-Route::group(['prefix'=>'mst'], function(){
-	Route::get('pms/customer', 'PMS\customerController@_index');
+Route::group(['prefix'=>'site'], function(){
+	Route::get('menus','Sys\menuController@index');
 });
+
+Route::group(['prefix'=>'mst', 'middleware'=>['menus']], function(){
+	Route::get('pms/customer', 'PMS\customerController@_index');
+	Route::get('pms/customer/add', 'PMS\customerController@create');
+});
+
+Route::group(['prefix'=>'trx'], function(){
+});
+
+Route::group(['prefix'=>'rpt'], function(){
+});
+
+Route::group(['prefix'=>'app'], function(){
+});
+
+
