@@ -35,20 +35,20 @@
                             <div class="menu_section">
                                 <h3>{!! $item->title !!}</h3>
                                 @if($item->hasChildren())
+                                    <ul class="nav side-menu">
                                     <?php $childrens =  $item->children(); ?> 
                                     @foreach($childrens as $children)
-                                    <ul class="nav side-menu">
-                                        <li><a @if(!$item->hasChildren()) href="{!! $children->url() !!}" @endif><i class="fa fa-home"></i> {!! $children->title !!} @if($children->hasChildren()) <span class="fa fa-chevron-down"></span> @endif</a>
+                                        <li><a @if(!$children->hasChildren()) href="{!! $children->url() !!}" @endif>{!! $children->title !!} @if($children->hasChildren()) <span class="fa fa-chevron-down"></span> @endif</a>
                                         @if($children->hasChildren())
+                                            <ul class="nav child_menu" style="display: none">
                                             <?php $grandChildrens =  $children->children(); ?> 
                                             @foreach($grandChildrens as $grandChildren)
-                                            <ul class="nav child_menu" style="display: none">
                                                 <li><a href="{!! $grandChildren->url() !!}">{!! $grandChildren->title !!}</a></li>
-                                            </ul>
                                             @endforeach
+                                            </ul>
                                         @endif
-                                    </ul>
                                     @endforeach
+                                    </ul>
                                  @endif
                             </div>
                         @endforeach
