@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('templates.layouts.gentalella')
 
 @section('content')
 <div class="container">

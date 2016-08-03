@@ -14,6 +14,19 @@ use DB;
 
 class customerController extends Controller
 {
+
+    /**
+     * @function __construct dibuat dan dikembangkan oleh rianday.
+     * @depok
+     * @return true
+     */
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
+    
+
+
     /**
      * Display a listing of the resource.
      *

@@ -8,11 +8,11 @@ left join sys_menus_mst l4 on l3.root = l4.id_menu and l4.sys_status_aktif='A'
 where l1.sys_status_aktif = 'A'
 
 
-create view v_menu_app as 
-select aa.id_menu, aa.root, aa.level, aa.f_type as type_menu, aa.urutan, aa.keterangan as ket_menu, aa.sys_status_aktif as aktif_menu, 
-    bb.id_app, bb.nama, bb.f_type as type_app, bb.route, bb.link, bb.akses_role, bb.keterangan as ket_app, bb.sys_status_aktif as aktif_app 
-from sys_menus_mst aa join sys_app_mst bb on aa.f_app = bb.id_app
-
+create or replace view v_menu_app as 
+select aa.id_menu, aa.root, aa.level, aa.f_type as type_menu, aa.urutan, aa.nama_menu, aa.keterangan as ket_menu, aa.icon, aa.auth, aa.sys_status_aktif as aktif_menu, 
+bb.id_app, bb.nama, bb.f_type as type_app, bb.route, bb.link, bb.akses_role, bb.keterangan as ket_app, bb.sys_status_aktif as aktif_app 
+from sys_menus_mst aa left join sys_app_mst bb on aa.f_app = bb.id_app and bb.sys_status_aktif='A' 
+where aa.sys_status_aktif='A' ORDER BY GetPriority(aa.id_menu), aa.urutan
 
 DELIMITER $$
 DROP FUNCTION IF EXISTS `ACL`.`GetParentIDByID` $$

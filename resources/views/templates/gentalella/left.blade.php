@@ -53,6 +53,7 @@
                             </div>
                         @endforeach
                         @endif
+<!--
                         <div class="menu_section">
                             <h3>General</h3>
                             <ul class="nav side-menu">
@@ -158,7 +159,7 @@
                             </ul>
                         </div>
                        
-
+-->
                     </div>
 
                     <!-- /sidebar menu -->

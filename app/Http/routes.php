@@ -19,18 +19,19 @@
 Route::auth();
 
 
-Route::get('/','sites\snController@index');
+//Route::get('/','sites\snController@index');
 Route::get('/home', 'HomeController@index');
 
 
 
 Route::get('/token', 'Auth\TokenController@getToken');
 
-Route::group(['prefix'=>'site'], function(){
-	Route::get('menus','Sys\menuController@index');
+Route::group(/*['prefix'=>'site'],*/['middleware'=>['menus']], function(){
+	// Route::get('menus','Sys\menuController@index');
+        Route::get('/','sites\snController@index');
 });
 
-Route::group(['prefix'=>'mst', 'middleware'=>['menus']], function(){
+Route::group(['prefix'=>'mst', 'middleware'=>['menus','auth']], function(){
 	Route::get('pms/customer', 'PMS\customerController@_index');
 	Route::get('pms/customer/add', 'PMS\customerController@create');
 });

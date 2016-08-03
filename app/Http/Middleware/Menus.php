@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use DB;
 use Menu;
+use Auth;
+use URL;
 
 class Menus
 {
@@ -34,29 +36,60 @@ class Menus
         //             })->where('l1.sys_status_aktif','A')->get();
 
 //irwan haryanto
-        $listMenu = DB::table('v_menu_app')->whereNotNull('root')->get();
+        $query = DB::table('v_menu_app')->whereNotNull('root');//->get();
+        if(!Auth::check()){
+          $query->where('auth','T');
+        }
+        $listMenu = $query->get();
+
         Menu::make('MyNavBar', function($menu) use ($listMenu) {
             $subroot = $subsubroot = null;
             foreach ($listMenu as $key => $value) {
 
-                if($value->level == 1){
-                    $subroot = $menu->add($value->nama_menu);
-                }else {
-                    // null;
-                }
-
-                if(!empty($subroot)){
-                    if((!empty($listMenu[$key+1])) and $listMenu[$key+1]->root == $value->id_menu){   
-                       $subsubroot = $subroot->add($value->nama_menu)->prepend('<i class="fa fa-bank"></i>');
+              switch($value->level){
+                case 1 :
+                    $subroot = null;
+                    $subroot = $menu->add($value->nama_menu);                    
+                break;
+                case 2 :
+                    if(!empty($subroot)){
+                        if((!empty($listMenu[$key+1])) and $listMenu[$key+1]->root == $value->id_menu){   
+                           $subsubroot = $subroot->add($value->nama_menu)->prepend('<i class="fa '.$value->icon.'"></i>');
+                        }
+                        else {
+                            $subroot->add($value->nama_menu,['url'=>URL::to('/').$value->route])->prepend('<i class="fa '.$value->icon.'"></i>');
+                        }
                     }
-                    else {
-                        $subroot->add($value->nama_menu,['url'=>$value->route])->prepend('<i class="fa fa-home"></i>');
-                    }
-
+                break;
+                case 3 : 
                     if(!empty($subsubroot)){
-                        $subsubroot->add($value->nama_menu, ['url'=>$value->route]);
+                          $subsubroot->add($value->nama_menu, ['url'=> (!empty($value->route) ? URL::to('/').$value->route : '#')]);
                     }
-                }
+                break;
+                default:
+                  $subroot = null;
+                break;
+              }
+                // if($value->level == 1){
+                //     $subroot = null;
+                //     $subroot = $menu->add($value->nama_menu);
+                // }else {
+                //     // null;
+
+                //   if(!empty($subroot)){
+                //       if((!empty($listMenu[$key+1])) and $listMenu[$key+1]->root == $value->id_menu){   
+                //          $subsubroot = $subroot->add($value->nama_menu)->prepend('<i class="fa fa-bank"></i>');
+                //       }
+                //       else {
+                //           $subroot->add($value->nama_menu,['url'=>$value->route])->prepend('<i class="fa fa-home"></i>');
+                //       }
+
+                //   }
+
+                //   if(!empty($subsubroot)){
+                //       $subsubroot->add($value->nama_menu, ['url'=>$value->route]);
+                //   }
+                // }
 
             }                
             // $menu->add('Home',     array('action'  => 'PMS\customerController@_index', 'class' => 'navbar navbar-home', 'id' => 'home'));
